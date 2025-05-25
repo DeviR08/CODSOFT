@@ -1,0 +1,496 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechTrends - Latest Electronics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.43), rgba(129, 171, 211, 0.699)),
+        url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      padding-bottom: 100px; /* So content not hidden behind footer */
+    }
+    header {
+      background-color: #0d1b2a;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+    header h1 {
+      font-size: 2.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+    .btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #1b263b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .section {
+      padding: 3rem 1rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .features, .products, .smart-gadgets-list, .mobile-accessories-list,
+    .computing-devices-list, .smart-home-devices-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 2rem;
+    }
+    .feature, .product, .smart-gadget-item, .mobile-accessories-item,
+    .computing-devices-item, .smart-home-device-item {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      flex: 1 1 250px;
+      text-align: center;
+      position: relative;
+    }
+    .product img, .smart-gadget-item img, .mobile-accessories-item img,
+    .computing-devices-item img, .smart-home-device-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+     .product img, .smart-gadget-item img, .mobile-accessories-item img,
+    .computing-devices-item img, .smart-home-device-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .product h3, .smart-gadget-item h3, .mobile-accessories-item h3,
+    .computing-devices-item h3, .smart-home-device-item h3 {
+      margin-top: 1rem;
+    }
+    .reviews, .subscribe {
+      background-color: white;
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    footer {
+      background-color: #1b263b;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    #smart-gadgets-list-container,
+    #mobile-accessories-list-container,
+    #computing-devices-list-container,
+    #smart-home-devices-list-container {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    /* Cart button styling */
+    #cart-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #cart-count {
+      background-color: #fff;
+      color: #ff6f61;
+      border-radius: 50%;
+      padding: 0 8px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* Cart modal styles */
+    #cart-modal {
+      display: none;
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 320px;
+      max-height: 70vh;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      padding: 1rem;
+      overflow-y: auto;
+      z-index: 1001;
+    }
+    #cart-modal h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #ff6f61;
+    }
+    #cart-items {
+      list-style: none;
+      max-height: 50vh;
+      overflow-y: auto;
+      padding-left: 0;
+    }
+    #cart-items li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.4rem;
+    }
+    #cart-items li span {
+      flex: 1;
+    }
+    #cart-items li .remove-btn {
+      background-color: transparent;
+      border: none;
+      color: #ff6f61;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #close-cart {
+      display: block;
+      margin: 0.5rem auto 1rem;
+      background-color: #1b263b;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+  </style>
+  <script>
+    // Toggle product category lists (existing)
+    function toggleSmartGadgetsList() {
+      const list = document.getElementById('smart-gadgets-list-container');
+      list.style.display = (list.style.display === 'none' || list.style.display === '') ? 'flex' : 'none';
+    }
+    function toggleMobileAccessoriesList() {
+      const list = document.getElementById('mobile-accessories-list-container');
+      list.style.display = (list.style.display === 'none' || list.style.display === '') ? 'flex' : 'none';
+    }
+    function toggleComputingDevicesList() {
+      const list = document.getElementById('computing-devices-list-container');
+      list.style.display = (list.style.display === 'none' || list.style.display === '') ? 'flex' : 'none';
+    }
+    function toggleSmartHomeDevicesList() {
+      const list = document.getElementById('smart-home-devices-list-container');
+      list.style.display = (list.style.display === 'none' || list.style.display === '') ? 'flex' : 'none';
+    }
+
+    // Cart functionality
+    let cart = [];
+
+    function updateCartCount() {
+      const countElem = document.getElementById('cart-count');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      countElem.textContent = totalItems;
+    }
+
+    function addToCart(productName, price) {
+      price = Number(price.replace('₹', '').replace(',', '')); // parse price number
+
+      // Check if item already in cart
+      const existingItem = cart.find(item => item.name === productName);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({name: productName, price: price, quantity: 1});
+      }
+      updateCartCount();
+      alert(productName + " added to cart!");
+    }
+
+    function removeFromCart(productName) {
+      cart = cart.filter(item => item.name !== productName);
+      updateCartList();
+      updateCartCount();
+    }
+
+    function updateCartList() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+
+      if(cart.length === 0) {
+        cartItems.innerHTML = '<li>Your cart is empty.</li>';
+        return;
+      }
+
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span><strong>${item.name}</strong></span>
+          <span>₹${(item.price * item.quantity).toLocaleString()} (${item.quantity})</span>
+          <button class="remove-btn" onclick="removeFromCart('${item.name}')">&times;</button>
+        `;
+        cartItems.appendChild(li);
+      });
+    }
+
+    function toggleCartModal() {
+      const modal = document.getElementById('cart-modal');
+      if(modal.style.display === 'block') {
+        modal.style.display = 'none';
+      } else {
+        updateCartList();
+        modal.style.display = 'block';
+      }
+    }
+
+    function closeCartModal() {
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    // Attach event listeners after DOM loads
+    window.onload = function() {
+      // Attach add to cart events
+      const addButtons = document.querySelectorAll('.add-to-cart-btn');
+      addButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const productElem = btn.closest('.product, .smart-gadget-item, .mobile-accessories-item, .computing-devices-item, .smart-home-device-item');
+          const name = productElem.querySelector('h3').textContent;
+          const price = productElem.querySelector('p').textContent;
+          addToCart(name, price);
+        });
+      });
+
+      // Cart button event
+      document.getElementById('cart-button').addEventListener('click', toggleCartModal);
+
+      // Close cart button
+      document.getElementById('close-cart').addEventListener('click', closeCartModal);
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Discover the Latest in Tech</h1>
+    <h1>Smart Electronics <text-align:center></text-align:center></h1>
+    <p>Top-rated electronics at unbeatable prices</p>
+    <a href="#products" class="btn">Shop Now</a>
+  </header>
+
+  <!-- Cart Button -->
+  <button id="cart-button" aria-label="View Cart">
+    🛒 Cart <span id="cart-count">0</span>
+  </button>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <h2 id="cart-title">Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <button id="close-cart" aria-label="Close Cart">Close</button>
+  </div>
+ <section class="section features">
+  <div class="feature">
+      <h2>About Us </h2>
+      <p><h3>For the past 10 years, Smart Electronics has been delivering the best in smart electronics — from innovative wearables to cutting-edge home devices. Trusted by thousands, our advanced technology keeps you connected, efficient, and ahead of the curve..</h3></p>
+    </div></section>
+
+  <section class="section features">
+    <div class="feature">
+      <h3>🚚 Free Shipping</h3>
+      <p>Get free delivery on orders over ₹2,000.</p>
+    </div>
+  
+    <div class="feature">
+      <h3>🔒 Secure Checkout</h3>
+      <p>Your data is protected with industry-standard encryption.</p>
+    </div>
+    <div class="feature">
+      <h3>⚡ Fast Delivery</h3>
+      <p>2-day express shipping available in major cities.</p>
+    </div>
+  </section>
+
+  <section class="section" id="products">
+    <h2 style="text-align:center">🔥 Best-Selling Electronics</h2>
+
+    <h3>🧠 Smart Gadgets</h3>
+    <button class="btn" onclick="toggleSmartGadgetsList()">View All Smart Gadgets</button>
+    <div class="products">
+      <div class="product">
+        <img src="https://www.leafstudios.in/cdn/shop/files/8_a0bf6d15-09d4-4352-ab11-46eb106257bf_800x.png?v=1732601674" alt="Smart Watch" width="300" height="500">
+        <h3>Smart Watch</h3>
+        <p>₹2,999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+      <div class="product">
+        <img src="https://www.pebblecart.com/cdn/shop/files/1_c7d158e1-ba31-4870-b93b-3fc195ce1c7a.jpg?v=1725445774&width=1000" alt="Smart Ring" width="300" height="500">
+        <h3>Smart Ring</h3>
+        <p>₹3,499</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+
+    <div id="smart-gadgets-list-container" class="smart-gadgets-list">
+      <div class="smart-gadget-item">
+        <img src="https://conekt.in/wp-content/uploads/2023/12/Rhythm_7.png" alt="Smart Glasses" width="470" height="470">
+        <h3>Smart Glasses</h3>
+        <p>₹3,499</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+      <div class="smart-gadget-item">
+        <img src="https://images.stockcake.com/public/e/b/b/ebbbd8d4-7be7-4512-b061-a3450772a972_medium/futuristic-smart-scale-stockcake.jpg" alt="Smart Scales" width="470" height="470">
+        <h3>Smart Scales</h3>
+        <p>₹3,499</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+
+    <h3>📱 Mobile & Accessories</h3>
+    <button class="btn" onclick="toggleMobileAccessoriesList()">View All Mobile & Accessories</button>
+    <div class="products">
+      <div class="product">
+        <img src="https://img.joomcdn.net/59c0eedb7e06412603e152882d1f3155de28cd2a_original.jpeg" alt="Wireless Earbuds" width="470" height="470">
+        <h3>Wireless Earbuds</h3>
+        <p>₹1,999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+      <div class="product">
+        <img src="https://acwo.com/cdn/shop/files/power-bank-711-black.webp?v=1721199474" alt="Power Bank" width="470" height="470">
+        <h3>Power Bank</h3>
+        <p>₹1,299</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+
+    <div id="mobile-accessories-list-container" class="mobile-accessories-list">
+      <div class="mobile-accessories-item">
+        <img src="https://images-cdn.ubuy.com.sa/659fa1f9191bf706997d6a76-augper-7-3-inch-android-13-smart-phone.jpg" alt="Smartphone" width="470" height="470">
+        <h3>Smartphone</h3>
+        <p>₹14,999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+      <div class="mobile-accessories-item">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXJYVjUeBazncnjltGmdE2HtPB4IqPYdEBlg&s" alt="Charging Cable and Adapter" width="470" height="470">
+        <h3>Charging Cable & Adapter</h3>
+        <p>₹799</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+
+    <h3>💻 Computing Devices</h3>
+    <button class="btn" onclick="toggleComputingDevicesList()">View All Computing devices</button>
+    <div class="products">
+      <div class="product">
+        <img src="https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/laptops/geforce-rtx-50-series-laptops-learn-og-1200x630-new.jpg" alt="Laptop"  width="480" height="480">
+        <h3>High Performance Laptop</h3>
+        <p>₹59,999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+      <div class="product">
+        <img src="https://i.pcmag.com/imagery/roundups/007y4PjTbtgMMDz5SnUq9Em-3.fit_lim.size_1050x.jpg" alt="Keyboard"  width="470" height="470">
+        <h3> Keyboard</h3>
+        <p>₹999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+    <div id="computing-devices-list-container" class="computing-devices-list">
+        <div class="computing-devices-item">
+          <img src="https://dbz-images.dubizzle.com/images/2024/05/07/21efc5f28894451fa1b228f267596708-.jpeg?impolicy=lpc" alt="ipad" width="470" height="470">
+          <h3>ipad</h3>
+          <p>₹14,999</p>
+          <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+        </div>
+        <div class="computing-devices-item">
+          <img src="https://ms-start.com/wp-content/uploads/2022/08/Home_Kategorije_misevi_v2-420x550.jpg" alt="Mice" width="470" height="470">
+          <h3>Wired Mice</h3>
+          <p>₹799</p>
+          <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+        </div>
+    </div>
+
+    <h3>🏠 Smart Home Devices</h3>
+    <button class="btn" onclick="toggleSmartHomeDevicesList()">View All Smart Home Devices</button>
+    <div class="products">
+      <div class="product">
+        <img src="https://cdn.shopify.com/s/files/1/0648/5478/6148/files/Image4.jpg?v=1722580287" alt="Smart Bulb" width="470" height="470">
+        <h3>Smart Bulb</h3>
+        <p>₹499</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+        
+      </div>
+      <div class="product">
+        <img src="https://c1.neweggimages.com/productimage/nb640/A4ESD2107295J3LA.jpg" alt="Security Camera" width="470" height="470">
+        <h3>WiFi Security Camera</h3>
+        <p>₹2,299</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+        
+      </div>
+    </div>
+    <div id="smart-home-devices-list-container" class="smart-home-devices-list">
+      <div class="smart-home-device-item">
+        <img src="https://geektechnology.in/cdn/shop/files/6_7c5f41a9-e0cb-4c7e-ab2e-8813b622da90_1800x.jpg?v=1695789604" alt="Smart Doorlock" width="470" height="470">
+        <h3>Smart Doorlock</h3>
+        <p>₹5,999</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+       
+      </div>
+      <div class="smart-home-device-item">
+        <img src="https://fs.npstatic.com/userfiles/6727621/image/2017/SMART-HOME/AndroidPIT-jbl-link-20-10-smart-home-speaker-6195-w1400h1050.jpg" alt="Voice Assistant Speaker" width="470" height="470">
+        <h3>Voice Assistant Speaker</h3>
+        <p>₹3,499</p>
+        <a href="#" class="btn add-to-cart-btn">Add to Cart</a>
+      </div>
+    </div>
+  <section class="section reviews">
+    <h2 style="text-align:center">📢 What Customers Say</h2>
+    <p>Fast delivery and awesome product quality!– <strong>Akash P.</strong></p>
+    <p>The smart watch works like a charm. Very happy!– <strong>Neha M.</strong></p>
+    <p>The WiFi security camera from Smart Electronics is amazing! Setup was super easy, and the video quality is crystal clear. I feel much safer knowing I can monitor my home anytime from my phone.- – <strong>priya </strong></p>
+    <p>The laptop from Smart Electronics is a powerhouse! Fast performance, great battery life, and a sleek design. Perfect for both work and gaming. – <strong>Arjun.</strong></p>
+    <p>The Smart Ring is super convenient and stylish. I love tracking my fitness and sleep without carrying my phone all the time! – <strong>Kodhai</strong></p>
+  
+  </section>
+
+  <section class="section subscribe">
+    <h2 style="text-align:center">📬 Get the Latest Deals</h2>
+    <form style="text-align:center">
+      <input type="email" placeholder="Enter your email" style="padding:0.5rem;width:250px;border-radius:5px;border:1px solid #ccc" required />
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <footer>
+    &copy; 2025 TechTrends. All rights reserved.
+  </footer>
+</body>
+</html>
